@@ -1,0 +1,31 @@
+baseURL = "https://go-ruby-resolv.github.io/"
+title = "go-ruby-resolv"
+disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[[params.phases]]
+  name = "Resolv::DNS::Message"
+  status = "ready"
+  blurb = "Full header (ID, QR/Opcode/AA/TC/RD/RA/RCODE), the question section, and the answer / authority / additional sections. `Encode` and `Decode` round-trip byte-for-byte, including the truncation-bit short-circuit MRI applies on decode."
+[[params.phases]]
+  name = "Resolv::DNS::Name"
+  status = "ready"
+  blurb = "Dotted-name parse / print, the absolute (trailing-dot) flag, case-insensitive `Equal` and `SubdomainOf`, and wire encoding with RFC 1035 length-prefixed labels and case-insensitive `0xC0` **compression pointers** (with backward-pointer and 255-octet guards on decode)."
+[[params.phases]]
+  name = "Resource records"
+  status = "ready"
+  blurb = "`A`, `AAAA`, `CNAME`, `NS`, `PTR`, `MX`, `TXT`, `SOA`, `SRV` (target encoded uncompressed, per MRI), `HINFO`, plus a `Generic` fallback that round-trips any other TYPE/CLASS opaquely."
+[[params.phases]]
+  name = "Resolv::IPv4 / IPv6"
+  status = "ready"
+  blurb = "`Create` parse with the exact MRI `Regex` / `Regex256` acceptance set, canonical `String` rendering (IPv6 uses MRI's first-run `::` compression), the raw `Addr` bytes, `Equal`, and the exported `IPv4Regex` / `IPv6Regex` constants."
+[[params.phases]]
+  name = "Resolv::Hosts"
+  status = "ready"
+  blurb = "Parse `/etc/hosts`-format text into name↔address maps and query them with `GetAddress` / `GetAddresses` / `GetName` / `GetNames`, reproducing MRI's comment stripping, whitespace split, and reversed per-name address ordering."
+[[params.phases]]
+  name = "Differential oracle & coverage"
+  status = "ready"
+  blurb = "Messages, names, addresses and hosts tables built here and compared byte-for-byte (base64-framed) against the system `ruby`; 100% coverage, gofmt + go vet clean, green across all six 64-bit Go arches and three OSes."
